@@ -18,7 +18,8 @@ foreach ($folder_name in $folder_names) {
 
     # docker build
     docker build . -t "$dockerhub_repo/$folder_name"
-    docker push "$dockerhub_repo/$folder_name"
+#     docker push "$dockerhub_repo/$folder_name"
+    kind load docker-image "$dockerhub_repo/$folder_name"
 
     # back to source path
     Set-Location -Path ".."
