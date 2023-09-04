@@ -15,6 +15,7 @@ spec:
       metadata:
         queueName: cherry-queue
         queueLength: "5"
+        #https://keda.sh/docs/2.11/scalers/rabbitmq-queue/#authentication-parameters
         #host: amqp://admin:admin@rabbitmq-cluster.rabbitmq.svc.cluster.local:5672/%2F
       authenticationRef:
         name: rabbitmq-auth
