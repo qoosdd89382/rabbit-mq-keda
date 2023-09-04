@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: collector-config
+data:
+  application.yml: |
+    server:
+      port: 8080
+
+  rabbit-mq-constants.yml: |
+    rabbit-mq-constants:
+      exchange-name: cherry-exchange
+      routing-key-name: cherry-routing-key
+      queue-name: cherry-queue
+

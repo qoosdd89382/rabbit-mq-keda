@@ -1,0 +1,21 @@
+server:
+  port: 8882
+
+spring:
+  config:
+    import: classpath:rabbit-mq-constants.yml, classpath:communication.yml
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+    listener:
+      prefetch: 10
+      simple:
+        acknowledge-mode: manual
+        retry:
+          enabled: true
+          initial-interval: 5000
+          max-attempts: 10
+          max-interval: 30000
+          multiplier: 3.0

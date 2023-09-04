@@ -1,0 +1,20 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: rabbitmq-consumer
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: consumer
+  pollingInterval: 5 # Optional. Default: 30 seconds
+  cooldownPeriod: 30 # Optional. Default: 300 seconds
+  maxReplicaCount: 10 # Optional. Default: 100\
+  minReplicaCount: 0
+  triggers:
+    - type: rabbitmq
+      metadata:
+        queueName: cherry-queue
+        queueLength: "5"
+        #host: amqp://admin:admin@rabbitmq-cluster.rabbitmq.svc.cluster.local:5672/%2F
+      authenticationRef:
+        name: rabbitmq-auth

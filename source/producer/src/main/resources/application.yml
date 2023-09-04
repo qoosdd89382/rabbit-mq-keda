@@ -1,0 +1,12 @@
+server:
+  port: 8881
+
+spring:
+  config:
+    import: classpath:rabbit-mq-constants.yml
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin

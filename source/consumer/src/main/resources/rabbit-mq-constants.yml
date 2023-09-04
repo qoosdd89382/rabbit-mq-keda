@@ -1,0 +1,4 @@
+rabbit-mq-constants:
+  exchange-name: cherry-exchange
+  routing-key-name: cherry-routing-key
+  queue-name: cherry-queue

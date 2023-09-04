@@ -1,0 +1,6 @@
+server:
+  port: 8883
+
+spring:
+  config:
+    import: classpath:rabbit-mq-constants.yml

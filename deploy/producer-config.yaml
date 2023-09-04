@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: producer-config
+data:
+  application.yml: |
+    server:
+      port: 8080
+    spring:
+      rabbitmq:
+        host: rabbitmq-cluster.rabbitmq.svc.cluster.local
+        port: 5672
+        username: admin
+        password: admin
+
+  rabbit-mq-constants.yml: |
+    rabbit-mq-constants:
+      exchange-name: cherry-exchange
+      routing-key-name: cherry-routing-key
+      queue-name: cherry-queue
+

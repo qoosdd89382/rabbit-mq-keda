@@ -1,0 +1,44 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consumer-config
+data:
+  application.yml: |
+    server:
+      port: 8080
+    spring:
+      rabbitmq:
+        host: rabbitmq-cluster.rabbitmq.svc.cluster.local
+        port: 5672
+        username: admin
+        password: admin
+        listener:
+          prefetch: 10
+          simple:
+            acknowledge-mode: manual
+            retry:
+              enabled: true
+              initial-interval: 5000
+              max-attempts: 10
+              max-interval: 30000
+              multiplier: 3.0
+
+  rabbit-mq-constants.yml: |
+    rabbit-mq-constants:
+      exchange-name: cherry-exchange
+      routing-key-name: cherry-routing-key
+      queue-name: cherry-queue
+
+  communication.yml: |
+    spring:
+      cloud:
+        openfeign:
+          client:
+            config:
+              default:
+                connectTimeout: 5000
+                readTimeout: 5000
+                loggerLevel: basic
+              collector-client:
+                url: http://collector
