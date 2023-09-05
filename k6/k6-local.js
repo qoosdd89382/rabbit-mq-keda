@@ -15,6 +15,6 @@ export let options = {
 };
 
 export default function () {
-        http.get('http://producer/send');
+        http.get('http://localhost:8881/send');
         sleep(0.01);
 }
