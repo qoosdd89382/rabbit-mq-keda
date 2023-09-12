@@ -1,5 +1,6 @@
 package com.cherry.consumer.consumer;
 
+import com.cherry.consumer.enumeration.QQqueueStatus;
 import com.cherry.consumer.feignclient.CollectorClient;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +22,12 @@ public class Consumer {
             System.out.println(" [new]Receiver1 Received '" + receivedMessage + "'");
             System.out.println(" Receiver1 doing somethings.....");
 
-            collectorClient.doSomething();
+            collectorClient.printer(receivedMessage, QQqueueStatus.UP.name());
 
-            // Acknowledge the message.
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
             System.out.println(" [x] Receiver1 error processing message: " + e.getMessage());
-            // You might want to take further action, such as logging the error, sending a notification, etc.
-            // Depending on the nature of the error, you may want to either requeue the message or send it to a dead-letter queue.
-            boolean shouldRequeue = true;  // Determine this based on the type of exception.
+            boolean shouldRequeue = true;
             channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, shouldRequeue);
         }
     }

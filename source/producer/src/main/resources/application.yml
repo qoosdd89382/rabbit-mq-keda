@@ -2,8 +2,19 @@ server:
   port: 8881
 
 spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=q_fail_over;trustServerCertificate=true
+    username: sa
+    password: P@ssw0rd
+  jpa:
+    database: sql-server
+    hibernate:
+      ddl-auto: none
+    properties:
+      generate_statistics: false
+
   config:
-    import: classpath:rabbit-mq-constants.yml
+    import: classpath:rabbit-mq-constants.yml, classpath:communication.yml
 
   rabbitmq:
     host: localhost

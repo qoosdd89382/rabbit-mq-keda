@@ -3,9 +3,7 @@ package com.cherry.collector.controller;
 import com.cherry.collector.constant.RabbitMqConstants;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,6 +26,11 @@ public class CollectorController {
     @GetMapping(path = "/getConfig")
     public String getConfig() {
         return rabbitMqConstants.getExchangeName();
+    }
+
+    @PostMapping(path = "/printer")
+    public void printer(@RequestParam String message, @RequestParam String from) {
+        log.info("[" + from + "] " + message);
     }
 
 

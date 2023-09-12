@@ -1,7 +1,18 @@
 server:
   port: 8882
+  shutdown: graceful
 
 spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=q_fail_over;trustServerCertificate=true
+    username: sa
+    password: P@ssw0rd
+  jpa:
+    database: sql-server
+    hibernate:
+      ddl-auto: none
+    properties:
+      generate_statistics: false
   config:
     import: classpath:rabbit-mq-constants.yml, classpath:communication.yml
   rabbitmq:
@@ -19,3 +30,24 @@ spring:
           max-attempts: 10
           max-interval: 30000
           multiplier: 3.0
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - 'health'
+          - 'info'
+          - 'metrics'
+  # https://www.baeldung.com/spring-liveness-readiness-probes
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
