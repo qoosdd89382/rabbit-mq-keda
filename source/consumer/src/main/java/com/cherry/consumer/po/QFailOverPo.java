@@ -25,7 +25,4 @@ public class QFailOverPo {
     @Column(name = "IS_CONSUMED")
     private Boolean isConsumed;
 
-    @Version
-    private int version;
-
 }
