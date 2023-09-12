@@ -2,12 +2,8 @@ package com.cherry.producer.task;
 
 import com.cherry.producer.constant.RabbitMqConstants;
 import com.cherry.producer.enumeration.QExchangeStatus;
-import com.cherry.producer.producer.QStatusHolder;
-import jakarta.annotation.PostConstruct;
-import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.rabbit.connection.Connection;
+import com.cherry.producer.producer.QStatusManager;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +18,7 @@ public class QExchangeReconnectTaskManager {
     private final static long SEC_MILLS = 1000;
 
     @Autowired
-    private QStatusHolder qStatusHolder;
+    private QStatusManager qStatusManager;
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -31,9 +27,12 @@ public class QExchangeReconnectTaskManager {
     private RabbitMqConstants rabbitMqConstants;
 
     public void start() {
-        if (timer != null || qStatusHolder.getQueueStatus() != QExchangeStatus.FAIL_OVER) {
+        if (timer != null) {
+            System.out.println("已有偵測排程執行中");
             return;
         }
+        qStatusManager.setQueueStatus(QExchangeStatus.FAIL_OVER);
+
         timer = new Timer();
         task = new QExchangeReconnectTask(this);
         timer.schedule(task,
@@ -58,18 +57,15 @@ public class QExchangeReconnectTaskManager {
         timer.cancel();
         timer.purge();
         timer = null;
+        qStatusManager.setQueueStatus(QExchangeStatus.UP);
     }
 
     public QExchangeStatus getQueueStatus() {
-        return qStatusHolder.getQueueStatus();
+        return qStatusManager.getQueueStatus();
     }
 
     public boolean isRabbitUp() {
-        try (Connection connection = connectionFactory.createConnection()) {
-            return connection.isOpen();
-        } catch (AmqpException e) {
-            return false;
-        }
+        return qStatusManager.isRabbitUp();
     }
 
 }

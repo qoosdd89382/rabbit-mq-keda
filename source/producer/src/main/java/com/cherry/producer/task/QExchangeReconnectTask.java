@@ -1,10 +1,6 @@
 package com.cherry.producer.task;
 
-import com.cherry.producer.constant.RabbitMqConstants;
 import com.cherry.producer.enumeration.QExchangeStatus;
-import com.cherry.producer.producer.QStatusHolder;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.TimerTask;
 
@@ -18,7 +14,7 @@ public class QExchangeReconnectTask extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("START");
+        System.out.println("TASK START");
         if (qExchangeReconnectTaskManager.getQueueStatus() != QExchangeStatus.FAIL_OVER) {
             return;
         }

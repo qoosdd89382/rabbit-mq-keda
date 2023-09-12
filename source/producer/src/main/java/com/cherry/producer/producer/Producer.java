@@ -3,6 +3,7 @@ package com.cherry.producer.producer;
 import com.cherry.producer.constant.RabbitMqConstants;
 import com.cherry.producer.dao.QFailOverDao;
 import com.cherry.producer.enumeration.QExchangeStatus;
+import com.cherry.producer.exception.QFailOverException;
 import com.cherry.producer.feignclient.CollectorClient;
 import com.cherry.producer.po.QFailOverPo;
 import com.cherry.producer.task.QExchangeReconnectTaskManager;
@@ -21,9 +22,6 @@ public class Producer {
     private RabbitMqConstants rabbitMqConstants;
 
     @Autowired
-    private QStatusHolder QStatusHolder;
-
-    @Autowired
     private QExchangeReconnectTaskManager qExchangeReconnectTaskManager;
 
     @Autowired
@@ -34,16 +32,19 @@ public class Producer {
 
     public void send(String message) {
         try {
+            if (qExchangeReconnectTaskManager.getQueueStatus() == QExchangeStatus.FAIL_OVER) {
+                System.out.println("已進入failover機制");
+                throw new QFailOverException();
+            }
+
             template.convertAndSend(
                     rabbitMqConstants.getExchangeName(),
                     rabbitMqConstants.getRoutingKeyName(),
                     message);
 
             System.out.println(" Sent '" + message + "'");
-        } catch (AmqpException e) {
+        } catch (AmqpException  | QFailOverException e ) {
             System.out.println(" [x] Error sending message: " + e.getMessage());
-
-            QStatusHolder.setQueueStatus(QExchangeStatus.FAIL_OVER);
             qExchangeReconnectTaskManager.start();
 
             QFailOverPo po = new QFailOverPo();
