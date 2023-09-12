@@ -22,6 +22,9 @@ public class ConsumeController {
     @Autowired
     private CollectorClient collectorClient;
 
+    /**
+     * 多 pod 時以下這種寫法會有問題 (race condition)
+     */
     @GetMapping(path = "/notifier")
     public void notifier() {
         List<QFailOverPo> finList = qFailOverDao.findAllByIsConsumedFalse().stream()
