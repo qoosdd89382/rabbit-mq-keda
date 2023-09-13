@@ -34,7 +34,7 @@ public class Producer {
 
     public void send(String message) {
         try {
-            if (qExchangeReconnectTaskManager.getQueueStatus() == QExchangeStatus.FAIL_OVER) {
+            if (qExchangeReconnectTaskManager.isFailingOver()) {
                 System.out.println("已進入failover機制");
                 throw new QFailOverException();
             }

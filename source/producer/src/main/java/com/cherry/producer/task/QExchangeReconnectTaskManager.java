@@ -64,6 +64,10 @@ public class QExchangeReconnectTaskManager {
         return qStatusManager.getQueueStatus();
     }
 
+    public boolean isFailingOver() {
+        return this.getQueueStatus().isFailingOver();
+    }
+
     public boolean isRabbitUp() {
         return qStatusManager.isRabbitUp();
     }

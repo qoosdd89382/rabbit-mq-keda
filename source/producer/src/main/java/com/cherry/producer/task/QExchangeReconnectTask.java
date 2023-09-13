@@ -15,7 +15,7 @@ public class QExchangeReconnectTask extends TimerTask {
     @Override
     public void run() {
         System.out.println("TASK START");
-        if (qExchangeReconnectTaskManager.getQueueStatus() != QExchangeStatus.FAIL_OVER) {
+        if (!qExchangeReconnectTaskManager.isFailingOver()) {
             return;
         }
         System.out.println("!!!");
