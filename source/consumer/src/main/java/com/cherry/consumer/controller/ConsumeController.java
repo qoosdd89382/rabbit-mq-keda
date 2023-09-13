@@ -25,14 +25,10 @@ public class ConsumeController {
 
     @PostConstruct
     public void remedy() {
-        this.notifier();
+        this.consume();
     }
 
-    /**
-     * 多 pod 時以下這種寫法會有問題 (race condition)
-     */
-    @GetMapping(path = "/notifier")
-    public void notifier() {
+    private void consume() {
         List<QFailOverPo> finList = qFailOverDao.findAllByIsConsumedFalse().stream()
                 .peek(f -> System.out.println("receive from db"))
                 .peek(f -> collectorClient.printer(f.getValue(), QQqueueStatus.FAIL_OVER.name()))
@@ -40,6 +36,15 @@ public class ConsumeController {
                 .collect(Collectors.toList());
 
         qFailOverDao.saveAll(finList);
+    }
+
+    /**
+     * 多 pod 時以下這種寫法會有問題 (race condition)
+     */
+    @GetMapping(path = "/notifier")
+    public void notifier() {
+        // TODO: 帶id過來消費
+        this.consume();
     }
 
 
