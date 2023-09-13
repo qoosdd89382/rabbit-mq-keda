@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.net.ConnectException;
 
+/**
+ * 多pod時狀態存在其他地方比較好
+ */
 @Component
 public class QStatusManager {
 
