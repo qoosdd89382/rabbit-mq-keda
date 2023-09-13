@@ -4,6 +4,7 @@ import com.cherry.consumer.dao.QFailOverDao;
 import com.cherry.consumer.enumeration.QQqueueStatus;
 import com.cherry.consumer.feignclient.CollectorClient;
 import com.cherry.consumer.po.QFailOverPo;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,11 @@ public class ConsumeController {
 
     @Autowired
     private CollectorClient collectorClient;
+
+    @PostConstruct
+    public void remedy() {
+        this.notifier();
+    }
 
     /**
      * 多 pod 時以下這種寫法會有問題 (race condition)
