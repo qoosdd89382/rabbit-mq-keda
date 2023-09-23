@@ -14,8 +14,8 @@ data:
         username: admin
         password: admin
         listener:
-          prefetch: 10
           simple:
+            prefetch: 10
             acknowledge-mode: manual
             retry:
               enabled: true
