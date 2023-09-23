@@ -18,10 +18,9 @@ public class Consumer {
     public void onMessage(Message message, Channel channel) throws Exception {
         try {
             String receivedMessage = new String(message.getBody());
-            System.out.println(" [new]Receiver1 Received '" + receivedMessage + "'");
-            System.out.println(" Receiver1 doing somethings.....");
+            System.out.println(receivedMessage);
 
-            collectorClient.doSomething();
+//            collectorClient.doSomething();
 
             // Acknowledge the message.
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

@@ -18,7 +18,7 @@ public class TestController {
     public String testSend() {
         producer.send("this is a test message, time=" + java.time.LocalDateTime.now()
                 .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-            + ",uuid=" + UUIDGenerator.generateUUID()
+            + ", uuid=" + UUIDGenerator.generateUUID()
         );
         return "test MQ sender demo";
     }
